@@ -8,6 +8,8 @@ package main;
  *
  * @author arthur
  */
+
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -95,8 +97,21 @@ public class ServidorBatataQuente {
                 atividades.add(atividade);
                 out.println("ATIVIDADE_ADICIONADA");
                 System.out.println("Atividade adicionada: " + atividade);
+                System.out.println("Total de atividades: " + atividades.size());
+                
+            } else if (mensagem.equals("REMOVER_TODAS_ATIVIDADES")) {
+                int quantidadeRemovida = atividades.size();
+                atividades.clear();
+                out.println("ATIVIDADES_REMOVIDAS");
+                System.out.println("Todas as " + quantidadeRemovida + " atividades foram removidas pelo admin");
+                System.out.println("Total de atividades agora: " + atividades.size());
                 
             } else if (mensagem.equals("LISTAR_ATIVIDADES")) {
+                String lista = String.join("|", atividades);
+                out.println("LISTA_ATIVIDADES:" + lista);
+                System.out.println("Enviando lista de atividades: " + atividades.size() + " itens");
+                
+            } else if (mensagem.equals("LISTAR_USUARIOS")) {
                 out.println("LISTA_ATIVIDADES:" + String.join("|", atividades));
                 
             } else if (mensagem.equals("LISTAR_USUARIOS")) {

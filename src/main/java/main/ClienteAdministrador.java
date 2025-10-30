@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main;
 
 /**
@@ -20,7 +16,7 @@ import java.util.List;
 
 public class ClienteAdministrador extends JFrame {
     private JTextField txtAtividade;
-    private JButton btnAdicionar, btnSortear, btnImportar, btnAtualizar, btnIniciar;
+    private JButton btnAdicionar, btnSortear, btnImportar, btnAtualizar, btnIniciar, btnRemoverTodas;
     private JTable tabelaAtividades, tabelaUsuarios;
     private DefaultTableModel modeloAtividades, modeloUsuarios;
     private JLabel lblStatus, lblUsuariosConectados, lblBatataAtual;
@@ -95,8 +91,16 @@ public class ClienteAdministrador extends JFrame {
         tabelaAtividades = new JTable(modeloAtividades);
         JScrollPane scrollAtividades = new JScrollPane(tabelaAtividades);
         
+        btnRemoverTodas = new JButton("🗑️ Remover Todas as Atividades");
+        btnRemoverTodas.setBackground(new Color(220, 53, 69));
+        btnRemoverTodas.setForeground(Color.WHITE);
+        btnRemoverTodas.addActionListener(e -> removerTodasAtividades());
+        JPanel painelBotaoRemover = new JPanel();
+        painelBotaoRemover.add(btnRemoverTodas);
+        
         painelAtividades.add(painelCadastro, BorderLayout.NORTH);
         painelAtividades.add(scrollAtividades, BorderLayout.CENTER);
+        painelAtividades.add(painelBotaoRemover, BorderLayout.SOUTH);
         
         // Painel de usuários
         JPanel painelUsuarios = new JPanel(new BorderLayout(5, 5));
@@ -284,6 +288,32 @@ public class ClienteAdministrador extends JFrame {
         
         if (resposta == JOptionPane.YES_OPTION) {
             out.println("INICIAR_JOGO");
+        }
+    }
+    
+    private void removerTodasAtividades() {
+        if (modeloAtividades.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this,
+                "Não há atividades para remover.",
+                "Lista Vazia",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        int resposta = JOptionPane.showConfirmDialog(this,
+            "Tem certeza que deseja remover TODAS as atividades?\nEsta ação não pode ser desfeita!",
+            "Confirmar Remoção",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+        
+        if (resposta == JOptionPane.YES_OPTION) {
+            System.out.println("Enviando comando: REMOVER_TODAS_ATIVIDADES");
+            out.println("REMOVER_TODAS_ATIVIDADES");
+            out.flush(); // Garante que a mensagem seja enviada imediatamente
+            modeloAtividades.getDataVector().removeAllElements();
+            modeloAtividades.fireTableDataChanged();
+            //tabelaAtividades.removeRowSelectionInterval(0, tabelaAtividades.getRowCount());
+            
         }
     }
     
